@@ -1,6 +1,4 @@
-# meta developer: @hikarimods (edited by Gemini for this request)
-# scope: hikka_only
-# meta pic: https://img.icons8.com/neon/96/forward-message.png
+# by: aliultraa.t.me
 
 import logging
 from .. import loader, utils
