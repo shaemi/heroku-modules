@@ -34,36 +34,18 @@ class CopilotAIMod(loader.Module):
            
            
 @loader.command()
-    async def copilotcmd(self, message):
-        """<text> - Ask @CopilotOfficialBot"""
-        chat = bot_id 
-        
+    async def copilotcmd(self, message):
+        """<текст> - Ask @CopilotOfficialBot"""
+        chat = bot_id
         reply = await message.get_reply_message()
-        
-        if reply:
-            if reply.media:
-                content_to_send = reply
-                text = reply.raw_text or "تصویری ارسال شد."
-            else:
-                text = reply.raw_text
-                content_to_send = text
-        else:
-            text = utils.get_args_raw(message)
-            content_to_send = text
-
-        if len(text) < 3 and not reply:
-            await utils.answer(message, "🚫<b>Error!\nyour message is to short.</b>")
-            return
-            
+        text = reply.raw_text if reply else utils.get_args_raw(message)
+        if len(text) < 3:
+        	await utils.answer(message, "🚫<b>Error!\nyour message is to short.</b>")
+        	return
         await utils.answer(message, "🤖<b>AI is answring...</b>")
-        
         async with message.client.conversation(bot) as conv:
-            
-            response = await conv.send_message(content_to_send) 
-            
+            response = await conv.send_message(text)
             response1 = await conv.wait_event(events.NewMessage(incoming=True, from_users=chat))
-            
             await utils.answer(message, f"❓<b>Question:</b> \n{text}\n\n🤖 <b>Copilot answer:</b>\n{response1.text}")
-            
             await response.delete()
             await response1.delete()
