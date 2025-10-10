@@ -16,12 +16,12 @@ class PVLoggerMod(loader.Module):
     strings = {
         "name": "PVLogger",
         "log_channel_not_set": (
-            "<b><emoji document_id=5240241323439555728>❌</emoji> Channel ID not set.</b>\n"
+            "<b>❌ Channel ID not set.</b>\n"
             "Please set <code>log_channel_id</code> in the config first using:\n"
             "<code>.config PVLogger log_channel_id YOUR_CHANNEL_ID</code>"
         ),
         "logging_status": (
-            "<b><emoji document_id=5325634863339144318>👁️</emoji> PV Logging is now {}</b>"
+            "<b>👁️ PV Logging is now {}</b>"
         ),
         "on": "ON",
         "off": "OFF",
