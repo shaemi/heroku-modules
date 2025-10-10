@@ -33,9 +33,9 @@ class CopilotAIMod(loader.Module):
             await response1.delete()
            
            
-@loader.command()
+    @loader.command()
     async def copilotcmd(self, message):
-        """<текст> - Ask @CopilotOfficialBot"""
+        """<text> - Ask Copilot"""
         chat = bot_id
         reply = await message.get_reply_message()
         text = reply.raw_text if reply else utils.get_args_raw(message)
@@ -46,6 +46,6 @@ class CopilotAIMod(loader.Module):
         async with message.client.conversation(bot) as conv:
             response = await conv.send_message(text)
             response1 = await conv.wait_event(events.NewMessage(incoming=True, from_users=chat))
-            await utils.answer(message, f"❓<b>Question:</b> \n{text}\n\n🤖 <b>Copilot answer:</b>\n{response1.text}")
+            await utils.answer(message, f"❓<b>Question:</b> \n{text}\n\n🤖 <b>AI Answer:</b>\n{response1.text}")
             await response.delete()
             await response1.delete()
