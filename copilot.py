@@ -35,17 +35,17 @@ class CopilotAIMod(loader.Module):
            
     @loader.command()
     async def copilotcmd(self, message):
-        """<text> - Ask Copilot"""
+        """<текст> - Ask Copilot"""
         chat = bot_id
         reply = await message.get_reply_message()
         text = reply.raw_text if reply else utils.get_args_raw(message)
         if len(text) < 3:
-        	await utils.answer(message, "🚫<b>Error!\nyour message is to short.</b>")
+        	await utils.answer(message, "🚫<b>Ошибка!\nСлишком маленький запрос.</b>")
         	return
-        await utils.answer(message, "🤖<b>AI is answring...</b>")
+        await utils.answer(message, "🤖<b>Нейросеть обрабатывает ваш запрос...</b>")
         async with message.client.conversation(bot) as conv:
             response = await conv.send_message(text)
             response1 = await conv.wait_event(events.NewMessage(incoming=True, from_users=chat))
-            await utils.answer(message, f"❓<b>Question:</b> \n{text}\n\n🤖 <b>AI Answer:</b>\n{response1.text}")
+            await utils.answer(message, f"❓<b>Вопрос:</b> \n{text}\n\n🤖 <b>Ответ нейросети:</b>\n{response1.text}")
             await response.delete()
             await response1.delete()
