@@ -35,7 +35,7 @@ class CopilotAIMod(loader.Module):
            
 @loader.command()
     async def copilotcmd(self, message):
-        """<текст> - Ask @CopilotOfficialBot"""
+        """<text> - Ask @CopilotOfficialBot"""
         chat = bot_id 
         
         reply = await message.get_reply_message()
