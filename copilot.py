@@ -34,8 +34,8 @@ class CopilotAIMod(loader.Module):
            
            
     @loader.command()
-    async def copilotcmd(self, message):
-        """Ask @CopilotOfficialBot (supports photo reply)"""
+    async def aicmd(self, message):
+        """- Ask Copilot (supports media & files in reply)"""
         chat = bot_id
         reply = await message.get_reply_message()
         text = utils.get_args_raw(message) or (reply.text if reply else "")
@@ -44,7 +44,7 @@ class CopilotAIMod(loader.Module):
         await utils.answer(message, "🤖 <b>AI is answering...</b>")
         async with message.client.conversation(bot) as conv:
             if reply and reply.media:
-                sent = await message.client.send_file(bot, reply.media, caption=text)
+                sent = await message.client.send_file(bot, reply.media, caption=text or None)
             else:
                 sent = await conv.send_message(text)
             response = await conv.wait_event(events.NewMessage(incoming=True, from_users=chat))
