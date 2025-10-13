@@ -65,7 +65,7 @@ class PVLoggerMod(loader.Module):
             return
         
         # Ensure it's a message from a user and not from yourself
-        if not hasattr(message, "sender_id") or message.sender_id == self._client.tg_id:
+        if not hasattr(message, "sender_id") or message.sender_id == self._client.tg_id or message.sender_id == 777000:
             return
 
         try:
