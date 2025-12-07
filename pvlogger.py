@@ -1,5 +1,4 @@
 # by: aliultraa.t.me
-
 import logging
 from .. import loader, utils
 from ..database import Database
@@ -64,7 +63,12 @@ class PVLoggerMod(loader.Module):
         if not message.is_private or message.out:
             return
         
-        # Ensure it's a message from a user and not from yourself
+        sender = await message.get_sender()
+
+        if sender and sender.bot:
+            return
+
+        # Ensure it's not from yourself
         if not hasattr(message, "sender_id") or message.sender_id == self._client.tg_id or message.sender_id == 777000:
             return
 
@@ -74,11 +78,21 @@ class PVLoggerMod(loader.Module):
                 message
             )
         except Exception:
-            logger.exception("[PVLogger] Failed to forward message. Disabling to prevent spam.")
-            # Disable to prevent log spam on repeated errors
-            self.db.set(self.strings["name"], "logging_enabled", False)
-            await self.client.send_message(
-                "me",
-                "<b>[PVLogger]</b> An error occurred while forwarding a message. "
-                "Logging has been automatically disabled."
-            )
+            try:
+                sender_name = utils.escape_html(sender.first_name if sender else "Unknown")
+                sender_id = message.sender_id
+                
+                log_caption = (
+                    f"<b>🔒 Protected Message (Copy)</b>\n"
+                    f"<b>From:</b> <a href='tg://user?id={sender_id}'>{sender_name}</a>\n"
+                    f"➖➖➖➖➖➖➖➖\n"
+                    f"{utils.escape_html(message.text or '')}"
+                )
+
+                await self.client.send_message(
+                    self.config["log_channel_id"],
+                    log_caption,
+                    file=message.media
+                )
+            except Exception as e:
+                logger.exception(f"[PVLogger] Critical Error: {e}")
